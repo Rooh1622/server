@@ -1,0 +1,14 @@
+{
+  "name": "auth",
+  "version": "0.0.0",
+  "description": "auth",
+  "main": "server.js",
+  "author": {
+    "name": "rooh1"
+  },
+  "dependencies": {
+    "jshashes": "^1.0.6",
+    "lowdb": "^0.14.0",
+    "ws": "^1.1.1"
+  }
+}
