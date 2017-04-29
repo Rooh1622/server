@@ -1,3 +1,4 @@
+'use strict'
 var WebSocketServer = new require('ws');
 const crypto = require('crypto');
 const low = require('lowdb');
@@ -14,6 +15,7 @@ sessionsDB.defaults({players: [], sessions: []}).value();
 var webSocketServer = new WebSocketServer.Server({
     port: 8081
 });
+console.log("opened on  " + webSocketServer.port);
 webSocketServer.on('connection', function (ws) {
 
     var id = sessionsDB.get('players').size() + 1;
@@ -27,6 +29,7 @@ webSocketServer.on('connection', function (ws) {
         var json = JSON.parse(message);
         let senderId = parseInt(JSON.parse(message).myId);
         let enId = parseInt(JSON.parse(message).enId);
+        let session_id = JSON.parse(message).ses_id + "";
         switch (json.type) {
             case 'connection':
                 module.init();
@@ -36,7 +39,15 @@ webSocketServer.on('connection', function (ws) {
                 var f1 = shipToField(Ships);
                 sessionsDB.get('players')
                     .push({id: id, Ships: Ships, field: field}).value();
-                clients[id].send(JSON.stringify({id: id}));
+                clients[id].send(JSON.stringify({type: "connection",id: id}));
+                break;
+            case 'test':
+                module.init();
+                var Ships = module.ships;
+                var empty = module.emptyField;
+                var field = module.field;
+                var f1 = shipToField(Ships);
+                clients[id].send(JSON.stringify(Ships));
                 break;
             case 'newGame':
 
@@ -55,10 +66,11 @@ webSocketServer.on('connection', function (ws) {
                  }*/
                 let ses_id = id + '#' + enId;
                 sessionsDB.get('sessions')
-                    .push({ses_id: ses_id, id: id, e_id: enId}).value();
+                    .push({ses_id: ses_id, id: id, e_id: enId, turn: enId}).value();
 
                 //for (var key in clients) {
                 clients[id].send(JSON.stringify({
+                    type: "newGame",
                     id: id,
                     msg: "Your oponent id -" + enId,
                     e_id: enId,
@@ -68,6 +80,7 @@ webSocketServer.on('connection', function (ws) {
                     field: bResp(sessionsDB.get('players').find({id: enId}).value().field, sessionsDB.get('players').find({id: id}).value().field)
                 }));
                 clients[enId].send(JSON.stringify({
+                    type: "newGame",
                     id: enId,
                     e_id: id,
                     ses_id: ses_id,
@@ -82,9 +95,17 @@ webSocketServer.on('connection', function (ws) {
                 break;
             case 'turn':
                 console.log('income turn');
-
+                let result = "miss";
+                let tile = -1;
                 var dbout = sessionsDB.get('players').find({id: id}).value();
                 var e_dbout = sessionsDB.get('players').find({id: enId}).value();
+                let turn = sessionsDB.get('sessions').find({ses_id: session_id}).value().turn;
+                if(turn != senderId){
+                    clients[senderId].send(JSON.stringify({type: "message", id: id, msg: "Not your turn, " + senderId}));
+                    log(turn + " " + session_id);
+                    console.dir(turn);
+                    break
+                }
                 // log(typeof enId)
                 // console.dir(e_dbout)
                 var Ships = dbout.Ships;
@@ -95,19 +116,65 @@ webSocketServer.on('connection', function (ws) {
                 var e_field = e_dbout.field;
                 var f1 = shipToField(Ships);
                 var e_f1 = shipToField(e_Ships);
-                let indexes = interpretate(json.tile);
+                let indexes;
+                if(json.client == "java")
+                    indexes = interpretateFrom99(json.tile);
+                else
+                    indexes = interpretate(json.tile);
+
                 let i = indexes[0] + 1;
                 let j = indexes[1] + 1;
+
+
+                tile = (j - 1) * 10 + (i - 1);
                 let cur_ship = findShip(e_Ships, i, j);
                 // console.log(i + ' ' + j);
                 console.log(cur_ship);
                 log("===============================");
                 console.dir(e_Ships[cur_ship]);
-                if (cur_ship == -1)
+                if (cur_ship == -1) {
                     e_field[i][j] = "-";
+
+                    //sessionsDB.get('sessions').
+                    log("TURN CHANGE " + session_id +" " + enId);
+                    sessionsDB.get('sessions')
+                        .find({ses_id: session_id})
+                        .assign({turn: enId}).value();
+
+
+
+                }
                 else if (cur_ship != -1 && e_Ships[cur_ship].isAlive() == true) {
+                    result = "hit";
+                    tile = (j - 1) * 10 + (i - 1);
                 }
                 else if (cur_ship != -1 && e_Ships[cur_ship].isAlive() == false) {
+                    result = "sink";
+                    tile = [];
+                    log(e_Ships[cur_ship].len);
+
+                    let cs = e_Ships[cur_ship];
+                    switch (cs.len){
+                        case 4:
+                             tile.push((cs.y4 - 1) * 10 + (cs.x4 - 1));
+                             tile.push((cs.y3 - 1) * 10 + (cs.x3 - 1));
+                             tile.push((cs.y2 - 1) * 10 + (cs.x2 - 1));
+                             tile.push((cs.y - 1) * 10 + (cs.x - 1));
+                             break;
+                        case 3:
+                             tile.push((cs.y3 - 1) * 10 + (cs.x3 - 1));
+                             tile.push((cs.y2 - 1) * 10 + (cs.x2 - 1));
+                             tile.push((cs.y - 1) * 10 + (cs.x - 1));
+                             break;
+                        case 2:
+                             tile.push((cs.y2 - 1) * 10 + (cs.x2 - 1));
+                             tile.push((cs.y - 1) * 10 + (cs.x - 1));
+                             break;
+                        case 1:
+                             tile.push((cs.y - 1) * 10 + (cs.x - 1));
+                             break;
+
+                    }
                     let ship = e_Ships[cur_ship];
                     console.log(e_Ships[cur_ship].id);
                     log("------Outline-------");
@@ -149,6 +216,7 @@ webSocketServer.on('connection', function (ws) {
                     }
                     log("------Outline End-------");
                 }
+                let hTile = (j - 1) * 10 + (i - 1);
                 // console.log(Ships[1].isAlive());
                 //field[i + 1][j + 1] = '+';
                 //Ships[i + 1][j + 1] = 'X';
@@ -157,9 +225,9 @@ webSocketServer.on('connection', function (ws) {
                 //let cur_index = sessionsDB.get('players').find({ id : id}).uniqueId().value();
                 //console.log("INDEX " + cur_index);
                 //for (var key in clients) {
-
-                clients[senderId].send(JSON.stringify({id: id, field: bResp(e_field, field, enId, senderId)}));
-                clients[enId].send(JSON.stringify({id: enId, field: bResp(field, e_field, senderId, enId)}));
+                log("INFO " + tile +  " "+ hTile +  " "+ result);
+                clients[senderId].send(JSON.stringify({type: "turn", result: result, tile: tile,hTile : hTile, id: id, field: bResp(e_field, field, enId, senderId)}));
+                clients[enId].send(JSON.stringify({type: "turn_from_e", result: result, tile: tile,hTile : hTile, id: enId, field: bResp(field, e_field, senderId, enId)}));
 
                 console.log("\n");
                 // }
@@ -198,6 +266,13 @@ function interpretate(index) {
 
     //console.log(i + ' ' + j);
     return [i, j];
+}
+function interpretateFrom99(index) {
+    let i = Math.floor(index / 10) ;
+    let j = index % 10;
+
+    console.log(i + ' hhilololo ' + j);
+    return [j, i];
 }
 function bResp(f1, f2, random_id, id) {
     return buildScreen(f1, random_id) + buildScreen(f2, id)

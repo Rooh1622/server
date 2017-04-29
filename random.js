@@ -1,25 +1,27 @@
+'use strict'
+
+var K4,K3,K2,K1,E3,E2,E1,C2,C1,L1;
 module.exports.init = init;
 var _id = 9;
-
 function init() {
     _id = 9;
     aiField  =[[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-              [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 
-];
+    ];
     generate();
     /*console.log(aiField[1][1]);
-    console.log(buildScreen(aiField));*/
+     console.log(buildScreen(aiField));*/
     //return buildScreen(aiField);
     module.exports.screen = buildScreen(aiField);
     module.exports.field = aiField;
@@ -45,7 +47,7 @@ function clear() {
         for(let j = 0; j < 12; j ++){
             if(aiField[i][j] == "O")
                 aiField[i][j] = " ";
-                aiField2[i][j] = " ";
+            aiField2[i][j] = " ";
         }
     }
 
@@ -76,10 +78,10 @@ function buildScreen(mas) {
 function generate() {
     console.log("------------------Random Log Started------------------");
 
-     lincor(aiField, aiFieldUnits);
-     cruser(aiField, aiFieldUnits);
-     esmin(aiField, aiFieldUnits);
-     kater(aiField, aiFieldUnits);
+    lincor(aiField, aiFieldUnits);
+    cruser(aiField, aiFieldUnits);
+    esmin(aiField, aiFieldUnits);
+    kater(aiField, aiFieldUnits);
 
     /* lincor(aiField2, aiFieldUnits);
      cruser(aiField2, aiFieldUnits);
@@ -160,633 +162,633 @@ function getRandomDirrecton() {
     return Math.floor(Math.random() * 4) + 1;
 }
 function lincor(generateIn, generateInUnits) {
-        for (var i = 0; i < 1; i++) {
-            while (1) {
-                let x,y,x2,y2,x3,y3,x4,y4 = 0;
-                startCordY = getRandomCord();
-                startCordX = getRandomCord();
-                var noRepeatFlag = 0;
-                if ((generateIn[startCordY][startCordX] == "X")
-                    || (generateIn[startCordY][startCordX] == "O")) {
-                    console.log("4-Repeat");
-                    continue
-                }
-                switch (getRandomDirrecton()) {
-                    case 1:
-                        if ((startCordX - 3 > 1)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 2] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 2] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 3] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 3] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 4] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 4] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY][startCordX + 1] != "X")
-                            && (generateIn[startCordY][startCordX - 4] != "X")) {
-                            console.log("4-1");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY][startCordX - 1] = "X";
-                            generateIn[startCordY][startCordX - 2] = "X";
-                            generateIn[startCordY][startCordX - 3] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY; y2 = startCordX - 1;
-                            x3 = startCordY; y3 = startCordX - 2;
-                            x4 = startCordY; y4 = startCordX - 3;
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY][startCordX - 4] = "O";
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 2] = "O";
-                            generateIn[startCordY - 1][startCordX - 2] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 3] = "O";
-                            generateIn[startCordY - 1][startCordX - 3] = "O";
-                            generateIn[startCordY + 1][startCordX - 4] = "O";
-                            generateIn[startCordY - 1][startCordX - 4] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 10;
-                            generateInUnits[startCordY][startCordX - 1] = i + 10;
-                            generateInUnits[startCordY][startCordX - 2] = i + 10;
-                            generateInUnits[startCordY][startCordX - 3] = i + 10;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 2:
-                        if ((startCordY + 3 < 11)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 2][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 2][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 3][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 3][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 4][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 4][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX] != "X")
-                            && (generateIn[startCordY + 4][startCordX] != "X")) {
-                            console.log("4-2");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY + 1][startCordX] = "X";
-                            generateIn[startCordY + 2][startCordX] = "X";
-                            generateIn[startCordY + 3][startCordX] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY + 1; y2 = startCordX;
-                            x3 = startCordY + 2; y3 = startCordX;
-                            x4 = startCordY + 3; y4 = startCordX;
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY + 4][startCordX] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 2][startCordX + 1] = "O";
-                            generateIn[startCordY + 2][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 3][startCordX + 1] = "O";
-                            generateIn[startCordY + 3][startCordX - 1] = "O";
-                            generateIn[startCordY + 4][startCordX + 1] = "O";
-                            generateIn[startCordY + 4][startCordX - 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 10;
-                            generateInUnits[startCordY + 1][startCordX] = i + 10;
-                            generateInUnits[startCordY + 2][startCordX] = i + 10;
-                            generateInUnits[startCordY + 3][startCordX] = i + 10;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 3:
-                        if ((startCordY - 3 > 1)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 2][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 2][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 3][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 3][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 4][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 4][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX] != "X")
-                            && (generateIn[startCordY - 4][startCordX] != "X")) {
-                            console.log("4-3");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY - 1][startCordX] = "X";
-                            generateIn[startCordY - 2][startCordX] = "X";
-                            generateIn[startCordY - 3][startCordX] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY - 1; y2 = startCordX;
-                            x3 = startCordY - 2; y3 = startCordX;
-                            x4 = startCordY - 3; y4 = startCordX;
-                            generateIn[startCordY - 4][startCordX] = "O";
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 2][startCordX + 1] = "O";
-                            generateIn[startCordY - 2][startCordX - 1] = "O";
-                            generateIn[startCordY - 3][startCordX + 1] = "O";
-                            generateIn[startCordY - 3][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 4][startCordX + 1] = "O";
-                            generateIn[startCordY - 4][startCordX - 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 10;
-                            generateInUnits[startCordY - 1][startCordX] = i + 10;
-                            generateInUnits[startCordY - 2][startCordX] = i + 10;
-                            generateInUnits[startCordY - 3][startCordX] = i + 10;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 4:
-                        if ((startCordX + 3 < 11)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 2] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 2] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 3] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 3] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 4] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 4] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY][startCordX - 1] != "X")
-                            && (generateIn[startCordY][startCordX + 4] != "X")) {
-                            console.log("4-4");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY][startCordX + 1] = "X";
-                            generateIn[startCordY][startCordX + 2] = "X";
-                            generateIn[startCordY][startCordX + 3] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY; y2 = startCordX + 1;
-                            x3 = startCordY; y3 = startCordX + 2;
-                            x4 = startCordY; y4 = startCordX + 3;
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY][startCordX + 4] = "O";
-                            generateIn[startCordY - 1][startCordX + 2] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 2] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 3] = "O";
-                            generateIn[startCordY + 1][startCordX + 3] = "O";
-                            generateIn[startCordY - 1][startCordX + 4] = "O";
-                            generateIn[startCordY + 1][startCordX + 4] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 10;
-                            generateInUnits[startCordY][startCordX + 1] = i + 10;
-                            generateInUnits[startCordY][startCordX + 2] = i + 10;
-                            generateInUnits[startCordY][startCordX + 3] = i + 10;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    default:
-                        console.log("Err");
-                        break
-                }
-
-                if (noRepeatFlag) {
-                    startCordY = undefined;
-                    startCordX = undefined;
-                    L1 = new Ship(x,y,x2,y2,x3,y3,x4,y4);
-                    noRepeatFlag = 0;
-                    console.log("4-Finished");
+    for (var i = 0; i < 1; i++) {
+        while (1) {
+            let x,y,x2,y2,x3,y3,x4,y4 = 0;
+            var startCordY = getRandomCord();
+            var startCordX = getRandomCord();
+            var noRepeatFlag = 0;
+            if ((generateIn[startCordY][startCordX] == "X")
+                || (generateIn[startCordY][startCordX] == "O")) {
+                console.log("4-Repeat");
+                continue
+            }
+            switch (getRandomDirrecton()) {
+                case 1:
+                    if ((startCordX - 3 > 1)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 2] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 2] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 3] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 3] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 4] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 4] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY][startCordX + 1] != "X")
+                        && (generateIn[startCordY][startCordX - 4] != "X")) {
+                        console.log("4-1");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY][startCordX - 1] = "X";
+                        generateIn[startCordY][startCordX - 2] = "X";
+                        generateIn[startCordY][startCordX - 3] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY; y2 = startCordX - 1;
+                        x3 = startCordY; y3 = startCordX - 2;
+                        x4 = startCordY; y4 = startCordX - 3;
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY][startCordX - 4] = "O";
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 2] = "O";
+                        generateIn[startCordY - 1][startCordX - 2] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 3] = "O";
+                        generateIn[startCordY - 1][startCordX - 3] = "O";
+                        generateIn[startCordY + 1][startCordX - 4] = "O";
+                        generateIn[startCordY - 1][startCordX - 4] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 10;
+                        generateInUnits[startCordY][startCordX - 1] = i + 10;
+                        generateInUnits[startCordY][startCordX - 2] = i + 10;
+                        generateInUnits[startCordY][startCordX - 3] = i + 10;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 2:
+                    if ((startCordY + 3 < 11)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 2][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 2][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 3][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 3][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 4][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 4][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX] != "X")
+                        && (generateIn[startCordY + 4][startCordX] != "X")) {
+                        console.log("4-2");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY + 1][startCordX] = "X";
+                        generateIn[startCordY + 2][startCordX] = "X";
+                        generateIn[startCordY + 3][startCordX] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY + 1; y2 = startCordX;
+                        x3 = startCordY + 2; y3 = startCordX;
+                        x4 = startCordY + 3; y4 = startCordX;
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY + 4][startCordX] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 2][startCordX + 1] = "O";
+                        generateIn[startCordY + 2][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 3][startCordX + 1] = "O";
+                        generateIn[startCordY + 3][startCordX - 1] = "O";
+                        generateIn[startCordY + 4][startCordX + 1] = "O";
+                        generateIn[startCordY + 4][startCordX - 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 10;
+                        generateInUnits[startCordY + 1][startCordX] = i + 10;
+                        generateInUnits[startCordY + 2][startCordX] = i + 10;
+                        generateInUnits[startCordY + 3][startCordX] = i + 10;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 3:
+                    if ((startCordY - 3 > 1)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 2][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 2][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 3][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 3][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 4][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 4][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX] != "X")
+                        && (generateIn[startCordY - 4][startCordX] != "X")) {
+                        console.log("4-3");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY - 1][startCordX] = "X";
+                        generateIn[startCordY - 2][startCordX] = "X";
+                        generateIn[startCordY - 3][startCordX] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY - 1; y2 = startCordX;
+                        x3 = startCordY - 2; y3 = startCordX;
+                        x4 = startCordY - 3; y4 = startCordX;
+                        generateIn[startCordY - 4][startCordX] = "O";
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 2][startCordX + 1] = "O";
+                        generateIn[startCordY - 2][startCordX - 1] = "O";
+                        generateIn[startCordY - 3][startCordX + 1] = "O";
+                        generateIn[startCordY - 3][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 4][startCordX + 1] = "O";
+                        generateIn[startCordY - 4][startCordX - 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 10;
+                        generateInUnits[startCordY - 1][startCordX] = i + 10;
+                        generateInUnits[startCordY - 2][startCordX] = i + 10;
+                        generateInUnits[startCordY - 3][startCordX] = i + 10;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 4:
+                    if ((startCordX + 3 < 11)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 2] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 2] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 3] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 3] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 4] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 4] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY][startCordX - 1] != "X")
+                        && (generateIn[startCordY][startCordX + 4] != "X")) {
+                        console.log("4-4");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY][startCordX + 1] = "X";
+                        generateIn[startCordY][startCordX + 2] = "X";
+                        generateIn[startCordY][startCordX + 3] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY; y2 = startCordX + 1;
+                        x3 = startCordY; y3 = startCordX + 2;
+                        x4 = startCordY; y4 = startCordX + 3;
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY][startCordX + 4] = "O";
+                        generateIn[startCordY - 1][startCordX + 2] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 2] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 3] = "O";
+                        generateIn[startCordY + 1][startCordX + 3] = "O";
+                        generateIn[startCordY - 1][startCordX + 4] = "O";
+                        generateIn[startCordY + 1][startCordX + 4] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 10;
+                        generateInUnits[startCordY][startCordX + 1] = i + 10;
+                        generateInUnits[startCordY][startCordX + 2] = i + 10;
+                        generateInUnits[startCordY][startCordX + 3] = i + 10;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                default:
+                    console.log("Err");
                     break
-                }
+            }
+
+            if (noRepeatFlag) {
+                startCordY = undefined;
+                startCordX = undefined;
+                 L1 = new Ship(x,y,x2,y2,x3,y3,x4,y4);
+                noRepeatFlag = 0;
+                console.log("4-Finished");
+                break
             }
         }
     }
+}
 
-    function cruser(generateIn, generateInUnits) {
-        for (var i = 0; i < 2; i++) {
-            while (1) {
+function cruser(generateIn, generateInUnits) {
+    for (var i = 0; i < 2; i++) {
+        while (1) {
 
-                let x,y,x2,y2,x3 = 0;
-                startCordY = getRandomCord();
-                startCordX = getRandomCord();
-                var noRepeatFlag = 0;
-                if ((generateIn[startCordY][startCordX] == "X")
-                    || (generateIn[startCordY][startCordX] == "O")) {
-                    console.log("3-Repeat");
-                    continue
-                }
-                switch (getRandomDirrecton()) {
-                    case 1:
-                        if ((startCordX - 2 > 1)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 2] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 2] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 3] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 3] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY][startCordX + 1] != "X")
-                            && (generateIn[startCordY][startCordX - 3] != "X")) {
-                            console.log("3-1");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY][startCordX - 1] = "X";
-                            generateIn[startCordY][startCordX - 2] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY; y2 = startCordX - 1;
-                            x3 = startCordY; y3 = startCordX - 2;
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY][startCordX - 3] = "O";
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 2] = "O";
-                            generateIn[startCordY - 1][startCordX - 2] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 3] = "O";
-                            generateIn[startCordY - 1][startCordX - 3] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 8;
-                            generateInUnits[startCordY][startCordX - 1] = i + 8;
-                            generateInUnits[startCordY][startCordX - 2] = i + 8;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 2:
-                        if ((startCordY + 2 < 11)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 2][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 2][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 3][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 3][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX] != "X")
-                            && (generateIn[startCordY + 3][startCordX] != "X")) {
-                            console.log("3-2");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY + 1][startCordX] = "X";
-                            generateIn[startCordY + 2][startCordX] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY + 1; y2 = startCordX;
-                            x3 = startCordY + 2; y3 = startCordX;
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY + 3][startCordX] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 2][startCordX + 1] = "O";
-                            generateIn[startCordY + 2][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 3][startCordX + 1] = "O";
-                            generateIn[startCordY + 3][startCordX - 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 8;
-                            generateInUnits[startCordY + 1][startCordX] = i + 8;
-                            generateInUnits[startCordY + 2][startCordX] = i + 8;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 3:
-                        if ((startCordY - 2 > 1)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 2][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 2][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 3][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 3][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX] != "X")
-                            && (generateIn[startCordY - 3][startCordX] != "X")) {
-                            console.log("3-3");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY - 1][startCordX] = "X";
-                            generateIn[startCordY - 2][startCordX] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY - 1; y2 = startCordX;
-                            x3 = startCordY - 2; y3 = startCordX;
-                            generateIn[startCordY - 3][startCordX] = "O";
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 2][startCordX + 1] = "O";
-                            generateIn[startCordY - 2][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 3][startCordX + 1] = "O";
-                            generateIn[startCordY - 3][startCordX - 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 8;
-                            generateInUnits[startCordY - 1][startCordX] = i + 8;
-                            generateInUnits[startCordY - 2][startCordX] = i + 8;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 4:
-                        if ((startCordX + 2 < 11)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 2] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 2] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 3] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 3] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY][startCordX - 1] != "X")
-                            && (generateIn[startCordY][startCordX + 3] != "X")) {
-                            console.log("3-4");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY][startCordX + 1] = "X";
-                            generateIn[startCordY][startCordX + 2] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY; y2 = startCordX + 1;
-                            x3 = startCordY; y3 = startCordX + 2;
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY][startCordX + 3] = "O";
-                            generateIn[startCordY - 1][startCordX + 2] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 2] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 3] = "O";
-                            generateIn[startCordY + 1][startCordX + 3] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 8;
-                            generateInUnits[startCordY][startCordX + 1] = i + 8;
-                            generateInUnits[startCordY][startCordX + 2] = i + 8;
-
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    default:
-                        console.log("Err");
-                        break
-                }
-
-                if (noRepeatFlag) {
-                    startCordY = undefined;
-                    startCordX = undefined;
-                    switch (i){
-                        case 0: C1 = new Ship(x,y,x2,y2,x3,y3);; break;
-                        case 1: C2 = new Ship(x,y,x2,y2,x3,y3); break
+            let x,y,x2,y2,x3,y3 = 0;
+            var startCordY = getRandomCord();
+            var startCordX = getRandomCord();
+            var noRepeatFlag = 0;
+            if ((generateIn[startCordY][startCordX] == "X")
+                || (generateIn[startCordY][startCordX] == "O")) {
+                console.log("3-Repeat");
+                continue
+            }
+            switch (getRandomDirrecton()) {
+                case 1:
+                    if ((startCordX - 2 > 1)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 2] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 2] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 3] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 3] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY][startCordX + 1] != "X")
+                        && (generateIn[startCordY][startCordX - 3] != "X")) {
+                        console.log("3-1");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY][startCordX - 1] = "X";
+                        generateIn[startCordY][startCordX - 2] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY; y2 = startCordX - 1;
+                        x3 = startCordY; y3 = startCordX - 2;
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY][startCordX - 3] = "O";
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 2] = "O";
+                        generateIn[startCordY - 1][startCordX - 2] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 3] = "O";
+                        generateIn[startCordY - 1][startCordX - 3] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 8;
+                        generateInUnits[startCordY][startCordX - 1] = i + 8;
+                        generateInUnits[startCordY][startCordX - 2] = i + 8;
+                        noRepeatFlag = 1;
                     }
+                    break;
+                case 2:
+                    if ((startCordY + 2 < 11)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 2][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 2][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 3][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 3][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX] != "X")
+                        && (generateIn[startCordY + 3][startCordX] != "X")) {
+                        console.log("3-2");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY + 1][startCordX] = "X";
+                        generateIn[startCordY + 2][startCordX] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY + 1; y2 = startCordX;
+                        x3 = startCordY + 2; y3 = startCordX;
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY + 3][startCordX] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 2][startCordX + 1] = "O";
+                        generateIn[startCordY + 2][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 3][startCordX + 1] = "O";
+                        generateIn[startCordY + 3][startCordX - 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 8;
+                        generateInUnits[startCordY + 1][startCordX] = i + 8;
+                        generateInUnits[startCordY + 2][startCordX] = i + 8;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 3:
+                    if ((startCordY - 2 > 1)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 2][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 2][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 3][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 3][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX] != "X")
+                        && (generateIn[startCordY - 3][startCordX] != "X")) {
+                        console.log("3-3");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY - 1][startCordX] = "X";
+                        generateIn[startCordY - 2][startCordX] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY - 1; y2 = startCordX;
+                        x3 = startCordY - 2; y3 = startCordX;
+                        generateIn[startCordY - 3][startCordX] = "O";
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 2][startCordX + 1] = "O";
+                        generateIn[startCordY - 2][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 3][startCordX + 1] = "O";
+                        generateIn[startCordY - 3][startCordX - 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 8;
+                        generateInUnits[startCordY - 1][startCordX] = i + 8;
+                        generateInUnits[startCordY - 2][startCordX] = i + 8;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 4:
+                    if ((startCordX + 2 < 11)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 2] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 2] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 3] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 3] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY][startCordX - 1] != "X")
+                        && (generateIn[startCordY][startCordX + 3] != "X")) {
+                        console.log("3-4");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY][startCordX + 1] = "X";
+                        generateIn[startCordY][startCordX + 2] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY; y2 = startCordX + 1;
+                        x3 = startCordY; y3 = startCordX + 2;
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY][startCordX + 3] = "O";
+                        generateIn[startCordY - 1][startCordX + 2] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 2] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 3] = "O";
+                        generateIn[startCordY + 1][startCordX + 3] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 8;
+                        generateInUnits[startCordY][startCordX + 1] = i + 8;
+                        generateInUnits[startCordY][startCordX + 2] = i + 8;
 
-                    noRepeatFlag = 0;
-                    console.log("3-Finished");
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                default:
+                    console.log("Err");
                     break
+            }
+
+            if (noRepeatFlag) {
+                startCordY = undefined;
+                startCordX = undefined;
+                switch (i){
+                    case 0:  C1 = new Ship(x,y,x2,y2,x3,y3);; break;
+                    case 1:  C2 = new Ship(x,y,x2,y2,x3,y3); break
                 }
+
+                noRepeatFlag = 0;
+                console.log("3-Finished");
+                break
             }
         }
     }
+}
 
-    function esmin(generateIn, generateInUnits) {
-        for (var i = 0; i < 3; i++) {
-            while (1) {
+function esmin(generateIn, generateInUnits) {
+    for (var i = 0; i < 3; i++) {
+        while (1) {
 
-                let x,y,x2,y2 = 0;
-                startCordY = getRandomCord();
-                startCordX = getRandomCord();
-                var noRepeatFlag = 0;
-                if ((generateIn[startCordY][startCordX] == "X")
-                    || (generateIn[startCordY][startCordX] == "O")) {
-                    console.log("2-Repeat");
-                    continue
-                }
-                switch (getRandomDirrecton()) {
-                    case 1:
-                        if ((startCordX - 1 > 1)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 2] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 2] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY][startCordX + 1] != "X")
-                            && (generateIn[startCordY][startCordX - 2] != "X")) {
-                            console.log("2-1");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY][startCordX - 1] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY; y2 = startCordX - 1;
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY][startCordX - 2] = "O";
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 2] = "O";
-                            generateIn[startCordY - 1][startCordX - 2] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 5;
-                            generateInUnits[startCordY][startCordX - 1] = i + 5;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 2:
-                        if ((startCordY + 1 < 11)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 2][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 2][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX] != "X")
-                            && (generateIn[startCordY + 2][startCordX] != "X")) {
-                            console.log("2-2");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY + 1][startCordX] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY + 1; y2 = startCordX;
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY + 2][startCordX] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 2][startCordX + 1] = "O";
-                            generateIn[startCordY + 2][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 5;
-                            generateInUnits[startCordY + 1][startCordX] = i + 5;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 3:
-                        if ((startCordY - 1 > 1)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 2][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 2][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX] != "X")
-                            && (generateIn[startCordY - 2][startCordX] != "X")) {
-                            console.log("2-3");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY - 1][startCordX] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY - 1; y2 = startCordX;
-                            generateIn[startCordY - 2][startCordX] = "O";
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY][startCordX + 1] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 2][startCordX + 1] = "O";
-                            generateIn[startCordY - 2][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 5;
-                            generateInUnits[startCordY - 1][startCordX] = i + 5;
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    case 4:
-                        if ((startCordX + 1 < 11)
-                            && (generateIn[startCordY][startCordX] != "X")
-                            && (generateIn[startCordY][startCordX] != "O")
-                            && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                            && (generateIn[startCordY - 1][startCordX + 2] != "X")
-                            && (generateIn[startCordY + 1][startCordX + 2] != "X")
-                            && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                            && (generateIn[startCordY][startCordX - 1] != "X")
-                            && (generateIn[startCordY][startCordX + 2] != "X")) {
-                            console.log("2-4");
-                            generateIn[startCordY][startCordX] = "X";
-                            generateIn[startCordY][startCordX + 1] = "X";
-                            x = startCordY; y = startCordX;
-                            x2 = startCordY; y2 = startCordX + 1;
-                            generateIn[startCordY + 1][startCordX] = "O";
-                            generateIn[startCordY - 1][startCordX] = "O";
-                            generateIn[startCordY][startCordX - 1] = "O";
-                            generateIn[startCordY][startCordX + 2] = "O";
-                            generateIn[startCordY - 1][startCordX + 2] = "O";
-                            generateIn[startCordY + 1][startCordX + 1] = "O";
-                            generateIn[startCordY - 1][startCordX + 1] = "O";
-                            generateIn[startCordY + 1][startCordX + 2] = "O";
-                            generateIn[startCordY - 1][startCordX - 1] = "O";
-                            generateIn[startCordY + 1][startCordX - 1] = "O";
-                            generateInUnits[startCordY][startCordX] = i + 5;
-                            generateInUnits[startCordY][startCordX + 1] = i + 5;
-
-                            noRepeatFlag = 1;
-                        }
-                        break;
-                    default:
-                        console.log("Err");
-                        break
-                }
-
-                if (noRepeatFlag) {
-                    startCordY = undefined;
-                    startCordX = undefined;
-                    noRepeatFlag = 0;
-                    switch (i){
-                        case 0: E1 = new Ship(x,y,x2,y2); break;
-                        case 1: E2 = new Ship(x,y,x2,y2); break;
-                        case 2: E3 = new Ship(x,y,x2,y2); break
+            let x,y,x2,y2 = 0;
+            var startCordY = getRandomCord();
+            var startCordX = getRandomCord();
+            var noRepeatFlag = 0;
+            if ((generateIn[startCordY][startCordX] == "X")
+                || (generateIn[startCordY][startCordX] == "O")) {
+                console.log("2-Repeat");
+                continue
+            }
+            switch (getRandomDirrecton()) {
+                case 1:
+                    if ((startCordX - 1 > 1)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 2] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 2] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY][startCordX + 1] != "X")
+                        && (generateIn[startCordY][startCordX - 2] != "X")) {
+                        console.log("2-1");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY][startCordX - 1] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY; y2 = startCordX - 1;
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY][startCordX - 2] = "O";
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 2] = "O";
+                        generateIn[startCordY - 1][startCordX - 2] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 5;
+                        generateInUnits[startCordY][startCordX - 1] = i + 5;
+                        noRepeatFlag = 1;
                     }
-                    console.log("2-Finished");
+                    break;
+                case 2:
+                    if ((startCordY + 1 < 11)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 2][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 2][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX] != "X")
+                        && (generateIn[startCordY + 2][startCordX] != "X")) {
+                        console.log("2-2");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY + 1][startCordX] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY + 1; y2 = startCordX;
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY + 2][startCordX] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 2][startCordX + 1] = "O";
+                        generateIn[startCordY + 2][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 5;
+                        generateInUnits[startCordY + 1][startCordX] = i + 5;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 3:
+                    if ((startCordY - 1 > 1)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 2][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 2][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX] != "X")
+                        && (generateIn[startCordY - 2][startCordX] != "X")) {
+                        console.log("2-3");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY - 1][startCordX] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY - 1; y2 = startCordX;
+                        generateIn[startCordY - 2][startCordX] = "O";
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY][startCordX + 1] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 2][startCordX + 1] = "O";
+                        generateIn[startCordY - 2][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 5;
+                        generateInUnits[startCordY - 1][startCordX] = i + 5;
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                case 4:
+                    if ((startCordX + 1 < 11)
+                        && (generateIn[startCordY][startCordX] != "X")
+                        && (generateIn[startCordY][startCordX] != "O")
+                        && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                        && (generateIn[startCordY - 1][startCordX + 2] != "X")
+                        && (generateIn[startCordY + 1][startCordX + 2] != "X")
+                        && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                        && (generateIn[startCordY][startCordX - 1] != "X")
+                        && (generateIn[startCordY][startCordX + 2] != "X")) {
+                        console.log("2-4");
+                        generateIn[startCordY][startCordX] = "X";
+                        generateIn[startCordY][startCordX + 1] = "X";
+                        x = startCordY; y = startCordX;
+                        x2 = startCordY; y2 = startCordX + 1;
+                        generateIn[startCordY + 1][startCordX] = "O";
+                        generateIn[startCordY - 1][startCordX] = "O";
+                        generateIn[startCordY][startCordX - 1] = "O";
+                        generateIn[startCordY][startCordX + 2] = "O";
+                        generateIn[startCordY - 1][startCordX + 2] = "O";
+                        generateIn[startCordY + 1][startCordX + 1] = "O";
+                        generateIn[startCordY - 1][startCordX + 1] = "O";
+                        generateIn[startCordY + 1][startCordX + 2] = "O";
+                        generateIn[startCordY - 1][startCordX - 1] = "O";
+                        generateIn[startCordY + 1][startCordX - 1] = "O";
+                        generateInUnits[startCordY][startCordX] = i + 5;
+                        generateInUnits[startCordY][startCordX + 1] = i + 5;
+
+                        noRepeatFlag = 1;
+                    }
+                    break;
+                default:
+                    console.log("Err");
                     break
+            }
+
+            if (noRepeatFlag) {
+                startCordY = undefined;
+                startCordX = undefined;
+                noRepeatFlag = 0;
+                switch (i){
+                    case 0:  E1 = new Ship(x,y,x2,y2); break;
+                    case 1:  E2 = new Ship(x,y,x2,y2); break;
+                    case 2:  E3 = new Ship(x,y,x2,y2); break
                 }
+                console.log("2-Finished");
+                break
             }
         }
     }
+}
 
-    function kater(generateIn, generateInUnits) {
-        for (var i = 0; i < 4; i++) {
-            while (1) {
-                let x,y = 0;
-                startCordY = getRandomCord();
-                startCordX = getRandomCord();
-                var noRepeatFlag = 0;
-                if ((generateIn[startCordY][startCordX] == "X")
-                    || (generateIn[startCordY][startCordX] == "O")) {
-                    console.log("1-Repeat");
-                    continue
+function kater(generateIn, generateInUnits) {
+    for (var i = 0; i < 4; i++) {
+        while (1) {
+            let x,y = 0;
+            var startCordY = getRandomCord();
+            var startCordX = getRandomCord();
+            var noRepeatFlag = 0;
+            if ((generateIn[startCordY][startCordX] == "X")
+                || (generateIn[startCordY][startCordX] == "O")) {
+                console.log("1-Repeat");
+                continue
+            }
+            if ((generateIn[startCordY][startCordX] != "X")
+                && (generateIn[startCordY][startCordX] != "O")
+                && (generateIn[startCordY - 1][startCordX] != "X")
+                && (generateIn[startCordY + 1][startCordX] != "X")
+                && (generateIn[startCordY - 1][startCordX - 1] != "X")
+                && (generateIn[startCordY + 1][startCordX - 1] != "X")
+                && (generateIn[startCordY - 1][startCordX + 1] != "X")
+                && (generateIn[startCordY + 1][startCordX + 1] != "X")
+                && (generateIn[startCordY][startCordX + 1] != "X")
+                && (generateIn[startCordY][startCordX - 1] != "X")) {
+                console.log("1-1");
+                generateIn[startCordY][startCordX] = "X";
+                x = startCordY; y = startCordX;
+                generateIn[startCordY][startCordX + 1] = "O";
+                generateIn[startCordY][startCordX - 1] = "O";
+                generateIn[startCordY + 1][startCordX] = "O";
+                generateIn[startCordY - 1][startCordX] = "O";
+                generateIn[startCordY + 1][startCordX - 1] = "O";
+                generateIn[startCordY - 1][startCordX - 1] = "O";
+                generateIn[startCordY + 1][startCordX + 1] = "O";
+                generateIn[startCordY - 1][startCordX + 1] = "O";
+                generateInUnits[startCordY][startCordX] = i + 1;
+                noRepeatFlag = 1;
+            }
+            if (noRepeatFlag) {
+                startCordY = undefined;
+                startCordX = undefined;
+                switch (i){
+                    case 0:  K1 = new Ship(x,y); break;
+                    case 1:  K2 = new Ship(x,y); break;
+                    case 2:  K3 = new Ship(x,y); break;
+                    case 3:  K4 = new Ship(x,y); break;
                 }
-                if ((generateIn[startCordY][startCordX] != "X")
-                    && (generateIn[startCordY][startCordX] != "O")
-                    && (generateIn[startCordY - 1][startCordX] != "X")
-                    && (generateIn[startCordY + 1][startCordX] != "X")
-                    && (generateIn[startCordY - 1][startCordX - 1] != "X")
-                    && (generateIn[startCordY + 1][startCordX - 1] != "X")
-                    && (generateIn[startCordY - 1][startCordX + 1] != "X")
-                    && (generateIn[startCordY + 1][startCordX + 1] != "X")
-                    && (generateIn[startCordY][startCordX + 1] != "X")
-                    && (generateIn[startCordY][startCordX - 1] != "X")) {
-                    console.log("1-1");
-                    generateIn[startCordY][startCordX] = "X";
-                    x = startCordY; y = startCordX;
-                    generateIn[startCordY][startCordX + 1] = "O";
-                    generateIn[startCordY][startCordX - 1] = "O";
-                    generateIn[startCordY + 1][startCordX] = "O";
-                    generateIn[startCordY - 1][startCordX] = "O";
-                    generateIn[startCordY + 1][startCordX - 1] = "O";
-                    generateIn[startCordY - 1][startCordX - 1] = "O";
-                    generateIn[startCordY + 1][startCordX + 1] = "O";
-                    generateIn[startCordY - 1][startCordX + 1] = "O";
-                    generateInUnits[startCordY][startCordX] = i + 1;
-                    noRepeatFlag = 1;
-                }
-                if (noRepeatFlag) {
-                    startCordY = undefined;
-                    startCordX = undefined;
-                    switch (i){
-                        case 0:  K1 = new Ship(x,y); break;
-                        case 1:  K2 = new Ship(x,y); break;
-                        case 2:  K3 = new Ship(x,y); break;
-                        case 3:  K4 = new Ship(x,y); break;
-                    }
 
-                    noRepeatFlag = 0;
-                    console.log("1-Finished");
-                    break
-                }
+                noRepeatFlag = 0;
+                console.log("1-Finished");
+                break
             }
         }
+    }
 
 
 }
@@ -797,6 +799,7 @@ class Ship{
         switch (arguments.length){
             case 2:
                 console.log(2);
+                this.cHash = (x - 1)* 10 + (y-1);
                 this.x = x ;
                 this.y = y;
                 this.hp = 1;
@@ -804,6 +807,8 @@ class Ship{
                 break;
             case 4:
                 console.log(4);
+                this.cHash = (x - 1)* 10 + (y-1);
+                this.c2Hash = (x2 - 1)* 10 + (y2-1);
                 this.x = x;
                 this.y = y;
                 this.x2 = x2;
@@ -812,6 +817,9 @@ class Ship{
                 this.len = 2;
                 break;
             case 6:
+                this.cHash = (x - 1)* 10 + (y-1);
+                this.c2Hash = (x2 - 1)* 10 + (y2-1);
+                this.c3Hash = (x3 - 1)* 10 + (y3-1);
                 this.x = x;
                 this.y = y;
                 this.x2 = x2;
@@ -823,6 +831,10 @@ class Ship{
                 break;
             case 8:
                 console.log(8);
+                this.cHash = (x - 1)* 10 + (y-1);
+                this.c2Hash = (x2 - 1)* 10 + (y2-1);
+                this.c3Hash = (x3 - 1)* 10 + (y3-1);
+                this.c4Hash = (x4 - 1)* 10 + (y4-1);
                 this.x = x;
                 this.y = y;
                 this.x2 = x2;
@@ -844,7 +856,7 @@ class Ship{
         console.log("ID " + this.id + " cords \n" + this.x + ' ' + this.y + '\n' +
             this.x2 + ' ' + this.y2 + '\n' +
             this.x3 + ' ' + this.y3 + '\n' +
-            this.x4 + ' ' + this.y4 + '\n'
+            this.x4 + ' ' + this.y4 + '\n' + "\nHashes\n" + this.cHash+ " " + this.c2Hash+ " " + this.c3Hash+ " " + this.c4Hash+ " "
 
 
         )

@@ -1,10 +1,10 @@
 {
-  "name": "auth",
+  "name": "SeaBattleServer",
   "version": "0.0.0",
-  "description": "auth",
-  "main": "server.js",
+  "description": "SeaBattleServer",
+  "main": "websocket.js",
   "author": {
-    "name": "rooh1"
+    "name": "Rooh1622"
   },
   "dependencies": {
     "jshashes": "^1.0.6",

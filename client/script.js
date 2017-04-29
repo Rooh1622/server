@@ -26,7 +26,8 @@ function init() {
 		let tile = document.getElementById('tile').value;
 		let id = document.getElementById('password').value;
 		let id2 = document.getElementById('id2').value;
-		reqest({type: 'turn', tile: tile, myId: id, enId : id2, date: Date.now()});
+		let ses = document.getElementById('ses').value;
+		reqest({type: 'turn', tile: tile, myId: id, enId : id2, ses_id: ses, date: Date.now()});
 
 		up(tile);
     };
@@ -73,10 +74,9 @@ socket.onmessage = function (event) {
     showMessage(incomingMessage.msg);
     //setCookie('token', incomingMessage, {expires: new Date(new Date().getTime() + 60 * 1000)});
     document.getElementById('password').value = incomingMessage.id;
-    document.getElementById('ses').value = incomingMessage.ses_id;
     if(incomingMessage.e_id != undefined)
         document.getElementById('id2').value = incomingMessage.e_id;
-    if(incomingMessage.ses_id != undefined)
+    if(incomingMessage.ses_id != undefined || incomingMessage.ses_id != null)
         document.getElementById('ses').value = incomingMessage.ses_id;
     if(incomingMessage.msg != undefined)
         document.getElementById('msg').value = incomingMessage.msg;
