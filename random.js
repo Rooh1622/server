@@ -20,15 +20,15 @@ function init() {
 
     ];
     generate();
-    /*console.log(aiField[1][1]);
-     console.log(buildScreen(aiField));*/
+    /*log(aiField[1][1]);
+     log(buildScreen(aiField));*/
     //return buildScreen(aiField);
     module.exports.screen = buildScreen(aiField);
     module.exports.field = aiField;
     clear();
     module.exports.field2 = aiField2;
     module.exports.emptyField = emptyField;
-    //console.log(buildScreen(aiField));
+    //log(buildScreen(aiField));
     //console.dir(K1);
 
     //console.dir(L1);
@@ -76,7 +76,7 @@ function buildScreen(mas) {
     return screen;
 }
 function generate() {
-    console.log("------------------Random Log Started------------------");
+    log("------------------Random Log Started------------------");
 
     lincor(aiField, aiFieldUnits);
     cruser(aiField, aiFieldUnits);
@@ -88,7 +88,7 @@ function generate() {
      esmin(aiField2, aiFieldUnits);
      kater(aiField2, aiFieldUnits);*/
 
-    console.log("------------------Random Log Ended------------------");
+    log("------------------Random Log Ended------------------");
 }
 
 
@@ -170,7 +170,7 @@ function lincor(generateIn, generateInUnits) {
             var noRepeatFlag = 0;
             if ((generateIn[startCordY][startCordX] == "X")
                 || (generateIn[startCordY][startCordX] == "O")) {
-                console.log("4-Repeat");
+                log("4-Repeat");
                 continue
             }
             switch (getRandomDirrecton()) {
@@ -190,7 +190,7 @@ function lincor(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX + 1] != "X")
                         && (generateIn[startCordY][startCordX + 1] != "X")
                         && (generateIn[startCordY][startCordX - 4] != "X")) {
-                        console.log("4-1");
+                        log("4-1");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY][startCordX - 1] = "X";
                         generateIn[startCordY][startCordX - 2] = "X";
@@ -236,7 +236,7 @@ function lincor(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX + 1] != "X")
                         && (generateIn[startCordY - 1][startCordX] != "X")
                         && (generateIn[startCordY + 4][startCordX] != "X")) {
-                        console.log("4-2");
+                        log("4-2");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY + 1][startCordX] = "X";
                         generateIn[startCordY + 2][startCordX] = "X";
@@ -282,7 +282,7 @@ function lincor(generateIn, generateInUnits) {
                         && (generateIn[startCordY - 1][startCordX - 1] != "X")
                         && (generateIn[startCordY + 1][startCordX] != "X")
                         && (generateIn[startCordY - 4][startCordX] != "X")) {
-                        console.log("4-3");
+                        log("4-3");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY - 1][startCordX] = "X";
                         generateIn[startCordY - 2][startCordX] = "X";
@@ -330,7 +330,7 @@ function lincor(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX - 1] != "X")
                         && (generateIn[startCordY][startCordX - 1] != "X")
                         && (generateIn[startCordY][startCordX + 4] != "X")) {
-                        console.log("4-4");
+                        log("4-4");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY][startCordX + 1] = "X";
                         generateIn[startCordY][startCordX + 2] = "X";
@@ -361,7 +361,7 @@ function lincor(generateIn, generateInUnits) {
                     }
                     break;
                 default:
-                    console.log("Err");
+                    log("Err");
                     break
             }
 
@@ -370,7 +370,7 @@ function lincor(generateIn, generateInUnits) {
                 startCordX = undefined;
                  L1 = new Ship(x,y,x2,y2,x3,y3,x4,y4);
                 noRepeatFlag = 0;
-                console.log("4-Finished");
+                log("4-Finished");
                 break
             }
         }
@@ -387,7 +387,7 @@ function cruser(generateIn, generateInUnits) {
             var noRepeatFlag = 0;
             if ((generateIn[startCordY][startCordX] == "X")
                 || (generateIn[startCordY][startCordX] == "O")) {
-                console.log("3-Repeat");
+                log("3-Repeat");
                 continue
             }
             switch (getRandomDirrecton()) {
@@ -405,7 +405,7 @@ function cruser(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX + 1] != "X")
                         && (generateIn[startCordY][startCordX + 1] != "X")
                         && (generateIn[startCordY][startCordX - 3] != "X")) {
-                        console.log("3-1");
+                        log("3-1");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY][startCordX - 1] = "X";
                         generateIn[startCordY][startCordX - 2] = "X";
@@ -444,7 +444,7 @@ function cruser(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX + 1] != "X")
                         && (generateIn[startCordY - 1][startCordX] != "X")
                         && (generateIn[startCordY + 3][startCordX] != "X")) {
-                        console.log("3-2");
+                        log("3-2");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY + 1][startCordX] = "X";
                         generateIn[startCordY + 2][startCordX] = "X";
@@ -483,7 +483,7 @@ function cruser(generateIn, generateInUnits) {
                         && (generateIn[startCordY - 1][startCordX - 1] != "X")
                         && (generateIn[startCordY + 1][startCordX] != "X")
                         && (generateIn[startCordY - 3][startCordX] != "X")) {
-                        console.log("3-3");
+                        log("3-3");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY - 1][startCordX] = "X";
                         generateIn[startCordY - 2][startCordX] = "X";
@@ -524,7 +524,7 @@ function cruser(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX - 1] != "X")
                         && (generateIn[startCordY][startCordX - 1] != "X")
                         && (generateIn[startCordY][startCordX + 3] != "X")) {
-                        console.log("3-4");
+                        log("3-4");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY][startCordX + 1] = "X";
                         generateIn[startCordY][startCordX + 2] = "X";
@@ -551,7 +551,7 @@ function cruser(generateIn, generateInUnits) {
                     }
                     break;
                 default:
-                    console.log("Err");
+                    log("Err");
                     break
             }
 
@@ -564,7 +564,7 @@ function cruser(generateIn, generateInUnits) {
                 }
 
                 noRepeatFlag = 0;
-                console.log("3-Finished");
+                log("3-Finished");
                 break
             }
         }
@@ -581,7 +581,7 @@ function esmin(generateIn, generateInUnits) {
             var noRepeatFlag = 0;
             if ((generateIn[startCordY][startCordX] == "X")
                 || (generateIn[startCordY][startCordX] == "O")) {
-                console.log("2-Repeat");
+                log("2-Repeat");
                 continue
             }
             switch (getRandomDirrecton()) {
@@ -597,7 +597,7 @@ function esmin(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX + 1] != "X")
                         && (generateIn[startCordY][startCordX + 1] != "X")
                         && (generateIn[startCordY][startCordX - 2] != "X")) {
-                        console.log("2-1");
+                        log("2-1");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY][startCordX - 1] = "X";
                         x = startCordY; y = startCordX;
@@ -629,7 +629,7 @@ function esmin(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX + 1] != "X")
                         && (generateIn[startCordY - 1][startCordX] != "X")
                         && (generateIn[startCordY + 2][startCordX] != "X")) {
-                        console.log("2-2");
+                        log("2-2");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY + 1][startCordX] = "X";
                         x = startCordY; y = startCordX;
@@ -661,7 +661,7 @@ function esmin(generateIn, generateInUnits) {
                         && (generateIn[startCordY - 1][startCordX - 1] != "X")
                         && (generateIn[startCordY + 1][startCordX] != "X")
                         && (generateIn[startCordY - 2][startCordX] != "X")) {
-                        console.log("2-3");
+                        log("2-3");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY - 1][startCordX] = "X";
                         x = startCordY; y = startCordX;
@@ -695,7 +695,7 @@ function esmin(generateIn, generateInUnits) {
                         && (generateIn[startCordY + 1][startCordX - 1] != "X")
                         && (generateIn[startCordY][startCordX - 1] != "X")
                         && (generateIn[startCordY][startCordX + 2] != "X")) {
-                        console.log("2-4");
+                        log("2-4");
                         generateIn[startCordY][startCordX] = "X";
                         generateIn[startCordY][startCordX + 1] = "X";
                         x = startCordY; y = startCordX;
@@ -717,7 +717,7 @@ function esmin(generateIn, generateInUnits) {
                     }
                     break;
                 default:
-                    console.log("Err");
+                    log("Err");
                     break
             }
 
@@ -730,11 +730,15 @@ function esmin(generateIn, generateInUnits) {
                     case 1:  E2 = new Ship(x,y,x2,y2); break;
                     case 2:  E3 = new Ship(x,y,x2,y2); break
                 }
-                console.log("2-Finished");
+                log("2-Finished");
                 break
             }
         }
     }
+}
+function log(log) {
+    if(false)
+    console.log(log);
 }
 
 function kater(generateIn, generateInUnits) {
@@ -746,7 +750,7 @@ function kater(generateIn, generateInUnits) {
             var noRepeatFlag = 0;
             if ((generateIn[startCordY][startCordX] == "X")
                 || (generateIn[startCordY][startCordX] == "O")) {
-                console.log("1-Repeat");
+                log("1-Repeat");
                 continue
             }
             if ((generateIn[startCordY][startCordX] != "X")
@@ -759,7 +763,7 @@ function kater(generateIn, generateInUnits) {
                 && (generateIn[startCordY + 1][startCordX + 1] != "X")
                 && (generateIn[startCordY][startCordX + 1] != "X")
                 && (generateIn[startCordY][startCordX - 1] != "X")) {
-                console.log("1-1");
+                log("1-1");
                 generateIn[startCordY][startCordX] = "X";
                 x = startCordY; y = startCordX;
                 generateIn[startCordY][startCordX + 1] = "O";
@@ -784,7 +788,7 @@ function kater(generateIn, generateInUnits) {
                 }
 
                 noRepeatFlag = 0;
-                console.log("1-Finished");
+                log("1-Finished");
                 break
             }
         }
@@ -798,7 +802,7 @@ class Ship{
         this.id = _id--;
         switch (arguments.length){
             case 2:
-                console.log(2);
+                log(2);
                 this.cHash = (x - 1)* 10 + (y-1);
                 this.x = x ;
                 this.y = y;
@@ -806,7 +810,7 @@ class Ship{
                 this.len = 1;
                 break;
             case 4:
-                console.log(4);
+                log(4);
                 this.cHash = (x - 1)* 10 + (y-1);
                 this.c2Hash = (x2 - 1)* 10 + (y2-1);
                 this.x = x;
@@ -830,7 +834,7 @@ class Ship{
                 this.len = 3;
                 break;
             case 8:
-                console.log(8);
+                log(8);
                 this.cHash = (x - 1)* 10 + (y-1);
                 this.c2Hash = (x2 - 1)* 10 + (y2-1);
                 this.c3Hash = (x3 - 1)* 10 + (y3-1);
@@ -853,7 +857,7 @@ class Ship{
         return this.hp != 0;
     }
     print(){
-        console.log("ID " + this.id + " cords \n" + this.x + ' ' + this.y + '\n' +
+        log("ID " + this.id + " cords \n" + this.x + ' ' + this.y + '\n' +
             this.x2 + ' ' + this.y2 + '\n' +
             this.x3 + ' ' + this.y3 + '\n' +
             this.x4 + ' ' + this.y4 + '\n' + "\nHashes\n" + this.cHash+ " " + this.c2Hash+ " " + this.c3Hash+ " " + this.c4Hash+ " "

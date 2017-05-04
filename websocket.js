@@ -7,11 +7,11 @@ var clients = {};
 const sessionsDB = low('db.json');
 const themesDB = low('themes.json');
 var module = require("./random");
-
+var queue = [];
 const empty = module.emptyField;
 //console.dir(Ships);
 
-sessionsDB.defaults({players: [], sessions: []}).value();
+sessionsDB.defaults({players: [], sessions: [], queue: {}}).value();
 var webSocketServer = new WebSocketServer.Server({
     port: 8081
 });
@@ -30,6 +30,7 @@ webSocketServer.on('connection', function (ws) {
         let senderId = parseInt(JSON.parse(message).myId);
         let enId = parseInt(JSON.parse(message).enId);
         let session_id = JSON.parse(message).ses_id + "";
+        console.dir(json);
         switch (json.type) {
             case 'connection':
                 module.init();
@@ -41,13 +42,21 @@ webSocketServer.on('connection', function (ws) {
                     .push({id: id, Ships: Ships, field: field}).value();
                 clients[id].send(JSON.stringify({type: "connection",id: id}));
                 break;
-            case 'test':
-                module.init();
-                var Ships = module.ships;
-                var empty = module.emptyField;
-                var field = module.field;
-                var f1 = shipToField(Ships);
-                clients[id].send(JSON.stringify(Ships));
+            case 'queue':
+                //queue.push(1);
+                //queue.push(2);
+                let q = queue.shift();
+                if(q != undefined){
+                    clients[senderId].send(JSON.stringify({type: "queue",e_id: q, msg: "queue found : " + q}));
+                    clients[q].send(JSON.stringify({type: "queue", msg: "queue found : " + senderId}));
+                    log(q + " Found!");
+                } else{
+
+                    clients[senderId].send(JSON.stringify({type: "queue",e_id: -1, msg: "you added to queue"}));
+                    log("added");
+                    queue.push(senderId)
+                }
+                console.dir(queue + "  \n");
                 break;
             case 'newGame':
 
@@ -69,7 +78,7 @@ webSocketServer.on('connection', function (ws) {
                     .push({ses_id: ses_id, id: id, e_id: enId, turn: enId}).value();
 
                 //for (var key in clients) {
-                clients[id].send(JSON.stringify({
+                clients[senderId].send(JSON.stringify({
                     type: "newGame",
                     id: id,
                     msg: "Your oponent id -" + enId,

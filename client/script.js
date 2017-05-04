@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var socket = new WebSocket("ws://127.0.0.1:8081");
-
+var enId;
 socket.onopen = init;
 /*for(let i = 0; i < 99; i++){
     setTimeout(function(){
@@ -13,9 +13,15 @@ socket.onopen = init;
 function init() {
 
     reqest({type: 'connection', date: Date.now()});
+    setTimeout(function(){
+            let id = document.getElementById('password').value;
+            reqest({type: 'queue', myId: id, date: Date.now()});
+        }, 2000);
+
 
     document.getElementById('start').onclick = function () {
 		let id = document.getElementById('password').value;
+
 		let id2 = document.getElementById('id2').value;
         reqest({type: 'newGame', myId: id, enId : id2, date: Date.now()});
 		//reqest({type: 'turn', tile: tile, myId: id, enId : id2, date: Date.now()});
@@ -80,6 +86,11 @@ socket.onmessage = function (event) {
         document.getElementById('ses').value = incomingMessage.ses_id;
     if(incomingMessage.msg != undefined)
         document.getElementById('msg').value = incomingMessage.msg;
+    if(incomingMessage.e_id != undefined) {
+        enId = incomingMessage.e_id;
+
+        document.getElementById('id2').value = incomingMessage.e_id;
+    }
    // showMessage(document.getElementById('password').value );
     let f = incomingMessage.field;
     console.log(incomingMessage.field);
