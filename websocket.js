@@ -8,22 +8,23 @@ const sessionsDB = low('db.json');
 const themesDB = low('themes.json');
 var module = require("./random");
 var queue = [];
+//console.log = function () {};
+
 const empty = module.emptyField;
 //console.dir(Ships);
-
+disableLogs([3,1]);
 sessionsDB.defaults({players: [], sessions: [], queue: {}}).value();
 var webSocketServer = new WebSocketServer.Server({
     port: 8081
 });
-console.log("opened on  " + webSocketServer.port);
+console.info("opened on  :8081");
 webSocketServer.on('connection', function (ws) {
 
     var id = sessionsDB.get('players').size() + 1;
-    log(id);
 
     //console.dir(sessionsDB.get("lastId"));
     clients[id] = ws;
-    console.log("new connection " + id);
+    console.info("new connection " + id);
     //console.dir(clients[id].upgradeReq.headers);
     ws.on('message', function (message) {
         var json = JSON.parse(message);
@@ -48,12 +49,12 @@ webSocketServer.on('connection', function (ws) {
                 let q = queue.shift();
                 if(q != undefined){
                     clients[senderId].send(JSON.stringify({type: "queue",e_id: q, msg: "queue found : " + q}));
-                    clients[q].send(JSON.stringify({type: "queue", msg: "queue found : " + senderId}));
-                    log(q + " Found!");
+                    //clients[q].send(JSON.stringify({type: "queue", e_id: -1,msg: "queue found : " + senderId}));
+                    console.info(q + " Found!");
                 } else{
 
                     clients[senderId].send(JSON.stringify({type: "queue",e_id: -1, msg: "you added to queue"}));
-                    log("added");
+                    console.info(senderId + " added to queue");
                     queue.push(senderId)
                 }
                 console.dir(queue + "  \n");
@@ -63,7 +64,7 @@ webSocketServer.on('connection', function (ws) {
                 // console.log(buildScreen(field));
 
                 //let unheshedtoken = json.login + '#' + json.password
-                console.log('income newGame');
+                console.info('income newGame');
                 /* if (usersDB.get('users').find({token: json.token}).value()) {
                  for (var key in clients) {
                  clients[key].send(json.token);
@@ -103,7 +104,7 @@ webSocketServer.on('connection', function (ws) {
 
                 break;
             case 'turn':
-                console.log('income turn');
+                console.info('income turn');
                 let result = "miss";
                 let tile = -1;
                 var dbout = sessionsDB.get('players').find({id: id}).value();
@@ -111,8 +112,8 @@ webSocketServer.on('connection', function (ws) {
                 let turn = sessionsDB.get('sessions').find({ses_id: session_id}).value().turn;
                 if(turn != senderId){
                     clients[senderId].send(JSON.stringify({type: "message", id: id, msg: "Not your turn, " + senderId}));
-                    log(turn + " " + session_id);
-                    console.dir(turn);
+                    console.dir(turn + " " + session_id);
+                    //console.dir(turn);
                     break
                 }
                 // log(typeof enId)
@@ -138,7 +139,7 @@ webSocketServer.on('connection', function (ws) {
                 tile = (j - 1) * 10 + (i - 1);
                 let cur_ship = findShip(e_Ships, i, j);
                 // console.log(i + ' ' + j);
-                console.log(cur_ship);
+                console.dir(cur_ship);
                 log("===============================");
                 console.dir(e_Ships[cur_ship]);
                 if (cur_ship == -1) {
@@ -185,8 +186,8 @@ webSocketServer.on('connection', function (ws) {
 
                     }
                     let ship = e_Ships[cur_ship];
-                    console.log(e_Ships[cur_ship].id);
-                    log("------Outline-------");
+                    console.dir(e_Ships[cur_ship].id);
+                    console.info("------Outline-------");
                     let x = ship.x;
                     let x_max = ship.x;
                     if (ship.x4 != undefined) x_max = ship.x4;
@@ -196,7 +197,7 @@ webSocketServer.on('connection', function (ws) {
                         let tmp = x;
                         x = x_max;
                         x_max = tmp;
-                        log("x max")
+                        console.dir("x max")
                     }
                     let y = ship.y;
                     let y_max = ship.y;
@@ -209,21 +210,21 @@ webSocketServer.on('connection', function (ws) {
                         let tmp = y;
                         y = y_max;
                         y_max = tmp;
-                        log("y max")
+                        console.dir("y max")
                     }
-                    log(x + "--" + x_max);
-                    log("ship.y = " + ship.y + " | y = " + y + "  " + "--" + y_max);
+                    console.dir(x + "--" + x_max);
+                    console.dir("ship.y = " + ship.y + " | y = " + y + "  " + "--" + y_max);
 
                     for (let i = x - 1; i < x_max + 2; i++) {
-                        log("one i = " + i);
+                        console.dir("one i = " + i);
                         for (let j = y - 1; j < y_max + 2; j++) {
-                            log("two j = " + j);
+                            console.dir("two j = " + j);
                             if (e_f1[i][j] == 0) {
                                 e_field[i][j] = "-";
                             }
                         }
                     }
-                    log("------Outline End-------");
+                    console.info("------Outline End-------");
                 }
                 let hTile = (j - 1) * 10 + (i - 1);
                 // console.log(Ships[1].isAlive());
@@ -234,7 +235,7 @@ webSocketServer.on('connection', function (ws) {
                 //let cur_index = sessionsDB.get('players').find({ id : id}).uniqueId().value();
                 //console.log("INDEX " + cur_index);
                 //for (var key in clients) {
-                log("INFO " + tile +  " "+ hTile +  " "+ result);
+                console.dir("INFO " + tile +  " "+ hTile +  " "+ result);
                 clients[senderId].send(JSON.stringify({type: "turn", result: result, tile: tile,hTile : hTile, id: id, field: bResp(e_field, field, enId, senderId)}));
                 clients[enId].send(JSON.stringify({type: "turn_from_e", result: result, tile: tile,hTile : hTile, id: enId, field: bResp(field, e_field, senderId, enId)}));
 
@@ -246,7 +247,7 @@ webSocketServer.on('connection', function (ws) {
 
 
     ws.on('close', function () {
-        console.log('connection closet ' + id + '\n');
+        console.info('connection closet ' + id + '\n');
         delete clients[id];
     });
 
@@ -280,7 +281,7 @@ function interpretateFrom99(index) {
     let i = Math.floor(index / 10) ;
     let j = index % 10;
 
-    console.log(i + ' hhilololo ' + j);
+    console.dir(i + ' interpretateFrom99 ' + j);
     return [j, i];
 }
 function bResp(f1, f2, random_id, id) {
@@ -371,5 +372,19 @@ function drawOutline(ship) {
     log("------Outline End-------");
 }
 function log(log) {
+
     console.log(log);
+}
+function disableLogs(logs) {
+    for(let i = 0; i < logs.length; i++){
+        if(logs[i] == 1){
+            console.log = function () {};
+        }
+        if(logs[i] == 2){
+            console.info = function () {};
+        }
+        if(logs[i] == 3){
+            console.dir = function () {};
+        }
+    }
 }

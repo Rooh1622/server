@@ -737,8 +737,7 @@ function esmin(generateIn, generateInUnits) {
     }
 }
 function log(log) {
-    if(false)
-    console.log(log);
+    console.dir(log);
 }
 
 function kater(generateIn, generateInUnits) {
