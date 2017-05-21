@@ -15,7 +15,7 @@ var token = jwt.sign({"login":"rooh_user","password":"passlol", "type": "login"}
 
 console.info("TOKEN " + token);
 
-usersDB.defaults({users: [],leaderboard: [], secret : ""}).value();
+usersDB.defaults({users: [],leaderboard: [], secret : "", presets:[]}).value();
 
 var secret = usersDB.get('secret') + "";
 
@@ -43,17 +43,19 @@ var webSocketServer = new WebSocketServer.Server({
                     info.req.user = decoded; //[1]
 
                     console.info("\'reg\' Token verified ");
-                    let dbLogin = usersDB.get('users').find("login",decoded.login).value().login;
-                    if(dbLogin == decoded.login){
+                    let dbLogin = usersDB.get('users').find("login",decoded.login).value();
+                    if(decoded.type == 'reg' && dbLogin != undefined && dbLogin.login == decoded.login ){
                         console.info("\tIncoming registration failed: bad login");
                     } else if(decoded.type == 'reg'){
                         console.info("\tIncoming registration");
                         usersDB.get('users')
-                            .push({login: decoded.login, password: decoded.password, hits : 0,destroyed : 0,misses : 0,
+                            .push({login: decoded.login, password: decoded.password,
                                 token: jwt.sign({login:decoded.login },secret,{
                                     expiresIn : 365 * 24 * 60 * 60 * 1000
                                 })
                             }).value();
+                        usersDB.get('presets')
+                            .push({login: decoded.login, preset: []}).value();
                         usersDB.get('leaderboard')
                             .push({
                                 login: decoded.login,

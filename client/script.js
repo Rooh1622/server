@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-//var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InJvb2hfdXNlciIsInBhc3N3b3JkIjoicGFzc2xvbCIsInR5cGUiOiJyZWciLCJpYXQiOjE0OTQxNzA2MTAsImV4cCI6Mjc5MDE3MDYxMH0.w_sCL6ghdOrA5zQBAW33voszuYGA58v7wajZYjBRHeI';
-var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InJvb2hfdXNlciIsInBhc3N3b3JkIjoicGFzc2xvbCIsInR5cGUiOiJsb2dpbiIsImlhdCI6MTQ5NDE3MTA1MiwiZXhwIjoyNzkwMTcxMDUyfQ.xifRURGvKnMGahEmGsW8oBSOqpPY6BHJQ3u0VquS00Y';
+var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InJvb2gyIiwiaWF0IjoxNDk1MzU4Nzc2LCJleHAiOjMzMDMxMzU4Nzc2fQ.GbSMkkoAbEV0chhln8ANrv1HTdwCamUiDkp9Zqjd2dg';
+//var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InJvb2hfdXNlciIsInBhc3N3b3JkIjoicGFzc2xvbCIsInR5cGUiOiJsb2dpbiIsImlhdCI6MTQ5NDE3MTA1MiwiZXhwIjoyNzkwMTcxMDUyfQ.xifRURGvKnMGahEmGsW8oBSOqpPY6BHJQ3u0VquS00Y';
 var socket = new WebSocket( 'ws://127.0.0.1:8081/?access_token=' + token );
 var enId;
 socket.onopen = init;
@@ -43,8 +43,9 @@ function init() {
         //socket.close();
         console.clear();
 		//alert(hex2b64('abcdef'));
-        let user_id = document.getElementById('password').value;
-        reqest({type: 'printField', id: user_id, date: Date.now()});
+        let login = "rooh2";
+        let json = {ships: [{"c3": 73,"size": 4,"c0": 43,"c1": 53,"c2": 63}, {"size": 3,"c0": 26,"c1": 27,"c2": 28}, {"size": 3,"c0": 21,"c1": 31,"c2": 41}, {"size": 2,"c0": 71,"c1": 70}, {"size": 2,"c0": 66,"c1": 67}, {"size": 2,"c0": 86, "c1": 85}, {"size": 1,"c0": 14}, {"size": 1,"c0": 2}, {"size": 1,"c0": 91}, {"size": 1, "c0": 48}], iss: "java",type: "saveField", login: "rooh2"};
+        reqest(json);
     };
 }
 var chars = ['A','B','C','D','E','F','G','H','I','J'];

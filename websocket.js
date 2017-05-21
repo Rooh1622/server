@@ -6,6 +6,7 @@ var clients = {};
 const sessionsDB = low('db.json');
 const themesDB = low('themes.json');
 var module = require("./random");
+var shipper = require("./shipper");
 var jwt = require('jsonwebtoken');
 const usersDB = low('users.json');
 var queue = [];
@@ -17,7 +18,7 @@ const secret = usersDB.get('secret') + "";
 //console.dir(Ships);
 disableLogs([1]);
 sessionsDB.defaults({players: [], sessions: [], queue: {}}).value();
-usersDB.defaults({users: [],leaderboard: [], secret : ""}).value();
+usersDB.defaults({users: [],leaderboard: [], secret : "", presets:[]}).value();
 var webSocketServer = new WebSocketServer.Server({
     port: 8081,
     verifyClient: function (info, cb) {
@@ -68,7 +69,8 @@ webSocketServer.on('connection', function (ws) {
 
         let enId = parseInt(JSON.parse(message).enId);
         let session_id = JSON.parse(message).ses_id + "";
-        console.log(json);
+
+        console.dir(json);
         switch (json.type) {
             case 'connection':
                 module.init();
@@ -81,6 +83,12 @@ webSocketServer.on('connection', function (ws) {
                 clients[id].send(JSON.stringify({type: "connection",id: id}));
                 break;
             case 'queue':
+                console.info("preset -----------");
+                console.dir(json.usePreset);
+                /*if(json.usePreset){
+                    let preset = usersDB.get("presets").find({login : sender_login}).value().preset;
+                    sessionsDB.get('players').find({id: senderId}).assign({Ships: preset}).value();
+                }*/
                 let q = queue.shift();
                 if(q != undefined){
                     clients[senderId].send(JSON.stringify({type: "queue",e_id: q, msg: "queue found : " + q}));
@@ -100,6 +108,13 @@ webSocketServer.on('connection', function (ws) {
                     .take(100)
                     .value();
                 clients[senderId].send(JSON.stringify(db));
+                break;
+            case 'saveField':
+                //let db = usersDB.get('leaderboard');
+                console.dir("save");
+                let ships = shipper.main(json.ships);
+                usersDB.get("presets").find({login : json.login}).assign({preset: ships}).value();
+                clients[id].send(JSON.stringify({type: "saveFieldOK", result: "OK"}));
                 break;
             case 'endGame':
                 let status =  sessionsDB.get('sessions')
@@ -159,7 +174,9 @@ webSocketServer.on('connection', function (ws) {
                 let result = "miss";
                 let tile = -1;
                 var dbout = sessionsDB.get('players').find({id: id}).value();
+                console.info("LOGIN> " + sender_login);
                 var user_dbout = usersDB.get('leaderboard').find({login: sender_login});
+                console.dir(user_dbout.value().misses);
                 var e_dbout = sessionsDB.get('players').find({id: enId}).value();
                 //var user_e_dbout = sessionsDB.get('players').find({id: enId}).value();
                 let turn = sessionsDB.get('sessions').find({ses_id: session_id}).value().turn;
@@ -295,8 +312,8 @@ webSocketServer.on('connection', function (ws) {
                 //console.log("INDEX " + cur_index);
                 //for (var key in clients) {
                 console.log("INFO " + tile +  " "+ hTile +  " "+ result);
-                clients[senderId].send(JSON.stringify({type: "turn", result: result, tile: tile,hTile : hTile, id: id, field: bResp(e_field, field, enId, senderId)}));
-                clients[enId].send(JSON.stringify({type: "turn_from_e", result: result, tile: tile,hTile : hTile, id: enId, field: bResp(field, e_field, senderId, enId)}));
+                clients[senderId].send(JSON.stringify({type: "turn", result: result, tile: tile,hTile : hTile, id: id}));
+                clients[enId].send(JSON.stringify({type: "turn_from_e", result: result, tile: tile,hTile : hTile, id: enId}));
 
                 console.log("\n");
                 // }
@@ -363,31 +380,25 @@ function shipToField(ships) {
 
     ];
     //console.log("OUT " + out );
-    for (let i = 0; i < ships.length; i++) {
-        switch (i) {
-            case 0:
+    for (let ship of ships) {
+        switch (ship.len) {
             case 1:
+                out[ship.x][ship.y] = 1;
+                break;
             case 2:
+                out[ship.x][ship.y] = 2;
+                out[ship.x2][ship.y2] = 2;
+                break;
             case 3:
-                out[ships[i].x][ships[i].y] = 1;
+                out[ship.x][ship.y] = 3;
+                out[ship.x2][ship.y2] = 3;
+                out[ship.x3][ship.y3] = 3;
                 break;
             case 4:
-            case 5:
-            case 6:
-                out[ships[i].x][ships[i].y] = 2;
-                out[ships[i].x2][ships[i].y2] = 2;
-                break;
-            case 7 :
-            case 8 :
-                out[ships[i].x][ships[i].y] = 3;
-                out[ships[i].x2][ships[i].y2] = 3;
-                out[ships[i].x3][ships[i].y3] = 3;
-                break;
-            case 9:
-                out[ships[i].x][ships[i].y] = 4;
-                out[ships[i].x2][ships[i].y2] = 4;
-                out[ships[i].x3][ships[i].y3] = 4;
-                out[ships[i].x4][ships[i].y4] = 4;
+                out[ship.x][ship.y] = 4;
+                out[ship.x2][ship.y2] = 4;
+                out[ship.x3][ship.y3] = 4;
+                out[ship.x4][ship.y4] = 4;
                 break;
         }
     }
