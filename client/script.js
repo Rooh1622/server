@@ -1,6 +1,8 @@
 ﻿'use strict';
 
-var socket = new WebSocket("ws://127.0.0.1:8081");
+//var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InJvb2hfdXNlciIsInBhc3N3b3JkIjoicGFzc2xvbCIsInR5cGUiOiJyZWciLCJpYXQiOjE0OTQxNzA2MTAsImV4cCI6Mjc5MDE3MDYxMH0.w_sCL6ghdOrA5zQBAW33voszuYGA58v7wajZYjBRHeI';
+var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InJvb2hfdXNlciIsInBhc3N3b3JkIjoicGFzc2xvbCIsInR5cGUiOiJsb2dpbiIsImlhdCI6MTQ5NDE3MTA1MiwiZXhwIjoyNzkwMTcxMDUyfQ.xifRURGvKnMGahEmGsW8oBSOqpPY6BHJQ3u0VquS00Y';
+var socket = new WebSocket( 'ws://127.0.0.1:8081/?access_token=' + token );
 var enId;
 socket.onopen = init;
 /*for(let i = 0; i < 99; i++){
@@ -12,10 +14,10 @@ socket.onopen = init;
 }*/
 function init() {
 
-    reqest({type: 'connection', date: Date.now()});
+    //reqest({type: 'connection', date: Date.now()});
     setTimeout(function(){
             let id = document.getElementById('password').value;
-            reqest({type: 'queue', myId: id, date: Date.now()});
+            //reqest({type: 'queue', myId: id, date: Date.now()});
         }, 2000);
 
 
@@ -68,7 +70,7 @@ function up(v) {
 socket.onclose = function() {  console.log("Connection closed...") };
 socket.onmessage = function (event) {
 
-    console.clear();
+
     var incomingMessage = JSON.parse(event.data);
     //console.dir(incomingMessage);
     //console.dir(event);
@@ -76,8 +78,14 @@ socket.onmessage = function (event) {
         showMessage("Ошибка аутентификации");
         socket.close();
         return//.replace("\n", "<br>")
+    } else if(incomingMessage.type == "loginSuccess") {
+        console.log("TOKEN = " + incomingMessage.token);
+        token = incomingMessage.token;
+        var socket = new WebSocket( 'ws://127.0.0.1:8081/?access_token=' + token );
+
+        return
     }
-    showMessage(incomingMessage.msg);
+    //showMessage(incomingMessage.msg);
     //setCookie('token', incomingMessage, {expires: new Date(new Date().getTime() + 60 * 1000)});
     document.getElementById('password').value = incomingMessage.id;
     if(incomingMessage.e_id != undefined)

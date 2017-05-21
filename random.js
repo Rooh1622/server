@@ -29,16 +29,16 @@ function init() {
     module.exports.field2 = aiField2;
     module.exports.emptyField = emptyField;
     //log(buildScreen(aiField));
-    //console.dir(K1);
+    //console.log(K1);
 
-    //console.dir(L1);
+    //console.log(L1);
     K1.print();K2.print();K3.print();K4.print();
     E1.print();E2.print();E3.print();
     C1.print();C2.print();
     L1.print();
-    //console.dir(K4);
+    //console.log(K4);
     var Ships = [K4,K3,K2,K1,E3,E2,E1,C2,C1,L1];
-    //console.dir(Ships);
+    //console.log(Ships);
     module.exports.ships = Ships;
 
 }
@@ -158,7 +158,7 @@ function getRandomCord() {
 function getRandomId() {
     return Math.floor(Math.random() * 100) + 1;
 }
-function getRandomDirrecton() {
+function getRandomlogrecton() {
     return Math.floor(Math.random() * 4) + 1;
 }
 function lincor(generateIn, generateInUnits) {
@@ -173,7 +173,7 @@ function lincor(generateIn, generateInUnits) {
                 log("4-Repeat");
                 continue
             }
-            switch (getRandomDirrecton()) {
+            switch (getRandomlogrecton()) {
                 case 1:
                     if ((startCordX - 3 > 1)
                         && (generateIn[startCordY][startCordX] != "X")
@@ -390,7 +390,7 @@ function cruser(generateIn, generateInUnits) {
                 log("3-Repeat");
                 continue
             }
-            switch (getRandomDirrecton()) {
+            switch (getRandomlogrecton()) {
                 case 1:
                     if ((startCordX - 2 > 1)
                         && (generateIn[startCordY][startCordX] != "X")
@@ -584,7 +584,7 @@ function esmin(generateIn, generateInUnits) {
                 log("2-Repeat");
                 continue
             }
-            switch (getRandomDirrecton()) {
+            switch (getRandomlogrecton()) {
                 case 1:
                     if ((startCordX - 1 > 1)
                         && (generateIn[startCordY][startCordX] != "X")
@@ -737,7 +737,7 @@ function esmin(generateIn, generateInUnits) {
     }
 }
 function log(log) {
-    console.dir(log);
+    console.log(log);
 }
 
 function kater(generateIn, generateInUnits) {
