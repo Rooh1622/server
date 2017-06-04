@@ -2,7 +2,6 @@
 var WebSocketServer = new require('ws');
 const crypto = require('crypto');
 const low = require('lowdb');
-const handler = require('./handler');
 var clients = {};
 const sessionsDB = low('db.json');
 const themesDB = low('themes.json');
@@ -11,14 +10,13 @@ var shipper = require("./shipper");
 var jwt = require('jsonwebtoken');
 const usersDB = low('users.json');
 var queue = [];
-
 //console.log = function () {};
+
 
 const empty = module.emptyField;
 const secret = usersDB.get('secret') + "";
 //console.dir(Ships);
 disableLogs([1]);
-
 sessionsDB.defaults({players: [], sessions: [], queue: {}}).value();
 usersDB.defaults({users: [],leaderboard: [], secret : "", presets:[]}).value();
 var webSocketServer = new WebSocketServer.Server({
@@ -55,17 +53,15 @@ var webSocketServer = new WebSocketServer.Server({
 });
 
 console.info("opened on  :8081");
+webSocketServer.on('connection', async function (ws) {
 
-
-webSocketServer.on('connection', function (ws) {
-
-    var id = sessionsDB.get('players').size() + 1;
+    var id = await sessionsDB.get('players').size() + 1;
 
     //console.log(sessionsDB.get("lastId"));
     clients[id] = ws;
     console.info("new connection " + id);
     //console.log(clients[id].upgradeReq.headers);
-    ws.on('message', function (message) {
+    ws.on('message', async function (message) {
         var json = JSON.parse(message);
         let senderId = parseInt(JSON.parse(message).myId);
         let sender_login = json.login;
@@ -77,30 +73,98 @@ webSocketServer.on('connection', function (ws) {
         console.dir(json);
         switch (json.type) {
             case 'connection':
-                handler.connection(clients[id], id);
+                await module.init();
+                var Ships = module.ships;
+                var empty = module.emptyField;
+                var field = module.field;
+                var f1 = shipToField(Ships);
+                await sessionsDB.get('players')
+                    .push({id: id, Ships: Ships, field: field}).value();
+                clients[id].send(JSON.stringify({type: "connection",id: id}));
                 break;
             case 'queue':
-                handler.queue(clients[id], senderId, queue);
+                console.info("preset -----------");
+                console.dir(json.usePreset);
+                /*if(json.usePreset){
+                    let preset = usersDB.get("presets").find({login : sender_login}).value().preset;
+                    sessionsDB.get('players').find({id: senderId}).assign({Ships: preset}).value();
+                }*/
+                let q = queue.shift();
+                if(q != undefined){
+                    clients[senderId].send(JSON.stringify({type: "queue",e_id: q, msg: "queue found : " + q}));
+                    //clients[q].send(JSON.stringify({type: "queue", e_id: -1,msg: "queue found : " + senderId}));
+                    console.info(q + " Found!");
+                } else{
+
+                    clients[senderId].send(JSON.stringify({type: "queue",e_id: -1, msg: "you added to queue"}));
+                    console.info(senderId + " added to queue");
+                    queue.push(senderId)
+                }
+                console.log(queue + "  \n");
                 break;
             case 'getLeaderboard':
-                let db = usersDB.get('leaderboard')
+                let db = await usersDB.get('leaderboard')
                     .sortBy('hits')
                     .take(100)
                     .value();
                 clients[senderId].send(JSON.stringify(db));
                 break;
             case 'saveField':
-                handler.saveField(clients[id], json);
+                //let db = usersDB.get('leaderboard');
+                console.dir("save");
+                let ships = await shipper.main(json.ships);
+                await usersDB.get("presets").find({login : json.login}).assign({preset: ships}).value();
+                clients[id].send(JSON.stringify({type: "saveFieldOK", result: "OK"}));
                 break;
             case 'endGame':
-                handler.endGame(session_id,senderId, json.drop);
+                let status = await sessionsDB.get('sessions')
+                    .find({ses_id: session_id}).value().status;
+                let dropCase = json.drop;
+                console.info(status + " " + dropCase);
+                if (status == "playing" && (dropCase == "clear" || dropCase == "drop" )){
+                    console.info(session_id + " " + dropCase +" dropped by " + senderId);
+                    await sessionsDB.get('sessions')
+                        .find({ses_id: session_id})
+                        .assign({status: "drop"}).value();
+
+                    break;
+                }
+
                 break;
             case 'newGame':
 
                 // console.log(buildScreen(field));
 
                 //let unheshedtoken = json.login + '#' + json.password
-                handler.newGame(clients[senderId],clients[enId], id, enId,sender_login,e_login);
+                console.info('income newGame');
+
+                let ses_id = id + '#' + enId;
+                await sessionsDB.get('sessions')
+                    .push({ses_id: ses_id, id: id, e_id: enId, turn: enId, status: "playing",login: sender_login,login_opponent: e_login}).value();
+
+                //for (var key in clients) {
+                clients[senderId].send(JSON.stringify({
+                    type: "newGame",
+                    id: id,
+                    msg: "Your oponent id -" + enId,
+                    e_id: enId,
+                    ses_id: ses_id,
+                    turn: enId,
+                    field_mas_e: sessionsDB.get('players').find({id: enId}).value().field,
+                    field_mas_p: sessionsDB.get('players').find({id: id}).value().field,
+                    field: bResp(sessionsDB.get('players').find({id: enId}).value().field, sessionsDB.get('players').find({id: id}).value().field)
+                }));
+                clients[enId].send(JSON.stringify({
+                    type: "newGame",
+                    id: enId,
+                    e_id: id,
+                    ses_id: ses_id,
+                    turn: enId,
+                    msg: "Your oponent id -" + id,
+                    field_mas_p: sessionsDB.get('players').find({id: enId}).value().field,
+                    field_mas_e: sessionsDB.get('players').find({id: id}).value().field,
+                    field: bResp(sessionsDB.get('players').find({id: id}).value().field, sessionsDB.get('players').find({id: enId}).value().field)
+                }));
                 //console.log({id: id, field: bResp(empty,f1)});
                 // }
 
@@ -109,13 +173,13 @@ webSocketServer.on('connection', function (ws) {
                 console.info('income turn');
                 let result = "miss";
                 let tile = -1;
-                var dbout = sessionsDB.get('players').find({id: id}).value();
+                var dbout = await sessionsDB.get('players').find({id: id}).value();
                 console.info("LOGIN> " + sender_login);
-                var user_dbout = usersDB.get('leaderboard').find({login: sender_login});
+                var user_dbout = await usersDB.get('leaderboard').find({login: sender_login});
                 //console.dir(user_dbout.value().misses);
-                var e_dbout = sessionsDB.get('players').find({id: enId}).value();
+                var e_dbout = await sessionsDB.get('players').find({id: enId}).value();
                 //var user_e_dbout = sessionsDB.get('players').find({id: enId}).value();
-                let turn = sessionsDB.get('sessions').find({ses_id: session_id}).value().turn;
+                let turn = await sessionsDB.get('sessions').find({ses_id: session_id}).value().turn;
                 if(turn != senderId){
                     clients[senderId].send(JSON.stringify({type: "message", id: id, msg: "Not your turn, " + senderId}));
                     console.log(turn + " " + session_id);
@@ -154,7 +218,7 @@ webSocketServer.on('connection', function (ws) {
           //          user_dbout.assign({misses : misses+1}).value();
                     //sessionsDB.get('sessions').
                     log("TURN CHANGE " + session_id +" " + enId);
-                    sessionsDB.get('sessions')
+                    await sessionsDB.get('sessions')
                         .find({ses_id: session_id})
                         .assign({turn: enId}).value();
 
