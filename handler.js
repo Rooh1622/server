@@ -32,7 +32,7 @@ async function queue(Client, id, queue) {
      let preset = usersDB.get("presets").find({login : sender_login}).value().preset;
      sessionsDB.get('players').find({id: senderId}).assign({Ships: preset}).value();
      }*/
-    let q = ws.queue.shift();
+    let q = queue.shift();
     if(q != undefined){
         Client.send(JSON.stringify({type: "queue",e_id: q, msg: "queue found : " + q}));
         //clients[q].send(JSON.stringify({type: "queue", e_id: -1,msg: "queue found : " + senderId}));
@@ -65,7 +65,7 @@ async function endGame(session_id, senderId, drop) {
     }
 
 }
-async function newGame(Client, ClientEnemey, id, enId) {
+async function newGame(Client, ClientEnemey, id, enId, sender_login,e_login) {
     console.info('income newGame');
 
     let ses_id = id + '#' + enId;

@@ -100,7 +100,7 @@ webSocketServer.on('connection', function (ws) {
                 // console.log(buildScreen(field));
 
                 //let unheshedtoken = json.login + '#' + json.password
-                handler.newGame(clients[senderId],clients[enId], id, enId);
+                handler.newGame(clients[senderId],clients[enId], id, enId,sender_login,e_login);
                 //console.log({id: id, field: bResp(empty,f1)});
                 // }
 
