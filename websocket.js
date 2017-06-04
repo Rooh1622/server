@@ -2,6 +2,7 @@
 var WebSocketServer = new require('ws');
 const crypto = require('crypto');
 const low = require('lowdb');
+const handler = require('./handler');
 var clients = {};
 const sessionsDB = low('db.json');
 const themesDB = low('themes.json');
@@ -10,13 +11,14 @@ var shipper = require("./shipper");
 var jwt = require('jsonwebtoken');
 const usersDB = low('users.json');
 var queue = [];
-//console.log = function () {};
 
+//console.log = function () {};
 
 const empty = module.emptyField;
 const secret = usersDB.get('secret') + "";
 //console.dir(Ships);
 disableLogs([1]);
+
 sessionsDB.defaults({players: [], sessions: [], queue: {}}).value();
 usersDB.defaults({users: [],leaderboard: [], secret : "", presets:[]}).value();
 var webSocketServer = new WebSocketServer.Server({
@@ -53,6 +55,8 @@ var webSocketServer = new WebSocketServer.Server({
 });
 
 console.info("opened on  :8081");
+
+
 webSocketServer.on('connection', function (ws) {
 
     var id = sessionsDB.get('players').size() + 1;
@@ -73,34 +77,10 @@ webSocketServer.on('connection', function (ws) {
         console.dir(json);
         switch (json.type) {
             case 'connection':
-                module.init();
-                var Ships = module.ships;
-                var empty = module.emptyField;
-                var field = module.field;
-                var f1 = shipToField(Ships);
-                sessionsDB.get('players')
-                    .push({id: id, Ships: Ships, field: field}).value();
-                clients[id].send(JSON.stringify({type: "connection",id: id}));
+                handler.connection(clients[id], id);
                 break;
             case 'queue':
-                console.info("preset -----------");
-                console.dir(json.usePreset);
-                /*if(json.usePreset){
-                    let preset = usersDB.get("presets").find({login : sender_login}).value().preset;
-                    sessionsDB.get('players').find({id: senderId}).assign({Ships: preset}).value();
-                }*/
-                let q = queue.shift();
-                if(q != undefined){
-                    clients[senderId].send(JSON.stringify({type: "queue",e_id: q, msg: "queue found : " + q}));
-                    //clients[q].send(JSON.stringify({type: "queue", e_id: -1,msg: "queue found : " + senderId}));
-                    console.info(q + " Found!");
-                } else{
-
-                    clients[senderId].send(JSON.stringify({type: "queue",e_id: -1, msg: "you added to queue"}));
-                    console.info(senderId + " added to queue");
-                    queue.push(senderId)
-                }
-                console.log(queue + "  \n");
+                handler.queue(clients[id], senderId, queue);
                 break;
             case 'getLeaderboard':
                 let db = usersDB.get('leaderboard')
@@ -110,61 +90,17 @@ webSocketServer.on('connection', function (ws) {
                 clients[senderId].send(JSON.stringify(db));
                 break;
             case 'saveField':
-                //let db = usersDB.get('leaderboard');
-                console.dir("save");
-                let ships = shipper.main(json.ships);
-                usersDB.get("presets").find({login : json.login}).assign({preset: ships}).value();
-                clients[id].send(JSON.stringify({type: "saveFieldOK", result: "OK"}));
+                handler.saveField(clients[id], json);
                 break;
             case 'endGame':
-                let status =  sessionsDB.get('sessions')
-                    .find({ses_id: session_id}).value().status;
-                let dropCase = json.drop;
-                console.info(status + " " + dropCase);
-                if (status == "playing" && (dropCase == "clear" || dropCase == "drop" )){
-                    console.info(session_id + " " + dropCase +" dropped by " + senderId);
-                    sessionsDB.get('sessions')
-                        .find({ses_id: session_id})
-                        .assign({status: "drop"}).value();
-
-                    break;
-                }
-
+                handler.endGame(session_id,senderId, json.drop);
                 break;
             case 'newGame':
 
                 // console.log(buildScreen(field));
 
                 //let unheshedtoken = json.login + '#' + json.password
-                console.info('income newGame');
-
-                let ses_id = id + '#' + enId;
-                sessionsDB.get('sessions')
-                    .push({ses_id: ses_id, id: id, e_id: enId, turn: enId, status: "playing",login: sender_login,login_opponent: e_login}).value();
-
-                //for (var key in clients) {
-                clients[senderId].send(JSON.stringify({
-                    type: "newGame",
-                    id: id,
-                    msg: "Your oponent id -" + enId,
-                    e_id: enId,
-                    ses_id: ses_id,
-                    turn: enId,
-                    field_mas_e: sessionsDB.get('players').find({id: enId}).value().field,
-                    field_mas_p: sessionsDB.get('players').find({id: id}).value().field,
-                    field: bResp(sessionsDB.get('players').find({id: enId}).value().field, sessionsDB.get('players').find({id: id}).value().field)
-                }));
-                clients[enId].send(JSON.stringify({
-                    type: "newGame",
-                    id: enId,
-                    e_id: id,
-                    ses_id: ses_id,
-                    turn: enId,
-                    msg: "Your oponent id -" + id,
-                    field_mas_p: sessionsDB.get('players').find({id: enId}).value().field,
-                    field_mas_e: sessionsDB.get('players').find({id: id}).value().field,
-                    field: bResp(sessionsDB.get('players').find({id: id}).value().field, sessionsDB.get('players').find({id: enId}).value().field)
-                }));
+                handler.newGame(clients[senderId],clients[enId], id, enId);
                 //console.log({id: id, field: bResp(empty,f1)});
                 // }
 
@@ -176,7 +112,7 @@ webSocketServer.on('connection', function (ws) {
                 var dbout = sessionsDB.get('players').find({id: id}).value();
                 console.info("LOGIN> " + sender_login);
                 var user_dbout = usersDB.get('leaderboard').find({login: sender_login});
-                console.dir(user_dbout.value().misses);
+                //console.dir(user_dbout.value().misses);
                 var e_dbout = sessionsDB.get('players').find({id: enId}).value();
                 //var user_e_dbout = sessionsDB.get('players').find({id: enId}).value();
                 let turn = sessionsDB.get('sessions').find({ses_id: session_id}).value().turn;
@@ -214,8 +150,8 @@ webSocketServer.on('connection', function (ws) {
                 console.log(e_Ships[cur_ship]);
                 if (cur_ship == -1) {
                     e_field[i][j] = "-";
-                    let misses = user_dbout.value().misses;
-                    user_dbout.assign({misses : misses+1}).value();
+          //          let misses = user_dbout.value().misses;
+          //          user_dbout.assign({misses : misses+1}).value();
                     //sessionsDB.get('sessions').
                     log("TURN CHANGE " + session_id +" " + enId);
                     sessionsDB.get('sessions')
@@ -226,15 +162,15 @@ webSocketServer.on('connection', function (ws) {
 
                 }
                 else if (cur_ship != -1 && e_Ships[cur_ship].isAlive() == true) {
-                    let hist = user_dbout.value().hits;
-                    console.dir(hist);
-                    user_dbout.assign({hits : hist+1}).value();
+            //        let hist = user_dbout.value().hits;
+          //          console.dir(hist);
+          //          user_dbout.assign({hits : hist+1}).value();
                     result = "hit";
                     tile = (j - 1) * 10 + (i - 1);
                 }
                 else if (cur_ship != -1 && e_Ships[cur_ship].isAlive() == false) {
-                    let destroyed = user_dbout.value().destroyed;
-                    user_dbout.assign({destroyed : destroyed+1}).value();
+          //          let destroyed = user_dbout.value().destroyed;
+          //          user_dbout.assign({destroyed : destroyed+1}).value();
                     result = "sink";
                     tile = [];
                     log(e_Ships[cur_ship].len);

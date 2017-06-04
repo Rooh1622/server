@@ -83,11 +83,6 @@ function generate() {
     esmin(aiField, aiFieldUnits);
     kater(aiField, aiFieldUnits);
 
-    /* lincor(aiField2, aiFieldUnits);
-     cruser(aiField2, aiFieldUnits);
-     esmin(aiField2, aiFieldUnits);
-     kater(aiField2, aiFieldUnits);*/
-
     log("------------------Random Log Ended------------------");
 }
 
@@ -368,7 +363,7 @@ function lincor(generateIn, generateInUnits) {
             if (noRepeatFlag) {
                 startCordY = undefined;
                 startCordX = undefined;
-                 L1 = new Ship(x,y,x2,y2,x3,y3,x4,y4);
+                L1 = new Ship(x,y,x2,y2,x3,y3,x4,y4);
                 noRepeatFlag = 0;
                 log("4-Finished");
                 break
