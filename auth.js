@@ -33,7 +33,7 @@ var webSocketServer = new WebSocketServer.Server({
             cb(false, 401, 'Unauthorized');
         else {
 
-            jwt.verify(token, 'reg', function (err, decoded) {
+            jwt.verify(token, 'reg', async function (err, decoded) {
                 if (err) {
                     //cb(false, 401, 'Unauthorized')
 
@@ -43,10 +43,17 @@ var webSocketServer = new WebSocketServer.Server({
                     info.req.user = decoded; //[1]
 
                     console.info("\'reg\' Token verified ");
-                    let dbLogin = usersDB.get('users').find("login",decoded.login).value();
-                    if(decoded.type == 'reg' && dbLogin != undefined && dbLogin.login == decoded.login ){
-                        console.info("\tIncoming registration failed: bad login");
-                    } else if(decoded.type == 'reg'){
+                    const login = decoded.login;
+                    const dbLogin = usersDB.get('users').find({login: login}).value();
+                    console.info("|"+login+"|");
+                    console.dir(dbLogin);
+                    if(dbLogin != undefined && decoded.type == 'reg')
+                         {
+                             if(decoded.type == 'reg' && (dbLogin.login == login || login == undefined || decoded.password == undefined)) {
+                             console.info("\tIncoming registration failed: bad login");
+                             cb(false)
+                         }
+                    }else if(decoded.type == 'reg'){
                         console.info("\tIncoming registration");
                         usersDB.get('users')
                             .push({login: decoded.login, password: decoded.password,
